@@ -62,7 +62,7 @@ abstract class ezcQuery
 
     /**
      * Stores the type of a value which will we used when the value is bound.
-     * 
+     *
      * @var array(string=>int)
      */
     private $boundParametersType = array();
@@ -77,7 +77,7 @@ abstract class ezcQuery
 
     /**
      * Stores the type of a value which will we used when the value is bound.
-     * 
+     *
      * @var array(string=>int)
      */
     private $boundValuesType = array();
@@ -354,7 +354,7 @@ abstract class ezcQuery
             $this->boundCounter++;
             $placeHolder = ":ezcValue{$this->boundCounter}";
         }
-        
+
         $this->boundParameters[$placeHolder] =& $param;
         $this->boundParametersType[$placeHolder] = $type;
 
@@ -395,6 +395,15 @@ abstract class ezcQuery
             catch ( PDOException $e )
             {
                 // see comment below
+                sfContext::getInstance()->getLogger()->log(sprintf("%s line %d\n An exception occurred\n Message: %s\n code: %d\n key: %s\n value %s\n boundValuesType: %s",
+                    __METHOD__,
+                    __LINE__,
+                    $e->getMessage(),
+                    $e->getCode(),
+                    $key,
+                    $value,
+                    var_export($this->boundValuesType, 1)
+                ), sfLogger::ERR);
             }
         }
         foreach ( $this->boundParameters as $key => &$value )
@@ -413,6 +422,16 @@ abstract class ezcQuery
                 // the only other way to avoid this problem is parse the string for the
                 // bound variables. Note that a simple search will not do since the variable
                 // name may occur in a string.
+                sfContext::getInstance()->getLogger()->log(sprintf("%s line %d\n An exception occurred\n Message: %s\n code: %d\n key: %s\n value %s\n boundParametersType: %s",
+                    __METHOD__,
+                    __LINE__,
+                    $e->getMessage(),
+                    $e->getCode(),
+                    $key,
+                    $value,
+                    var_export($this->boundParametersType, 1)
+                ), sfLogger::ERR);
+
             }
         }
     }
