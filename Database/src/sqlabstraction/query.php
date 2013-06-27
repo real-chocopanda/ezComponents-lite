@@ -386,14 +386,11 @@ abstract class ezcQuery
      */
     public function doBind( PDOStatement $stmt )
     {
-        sfContext::getInstance()->getLogger()->log(sprintf("%s::%d boundValues %s", __METHOD__, __LINE__, var_export($this->boundValues, 1)), sfLogger::WARNING);
         foreach ( $this->boundValues as $key => $value )
         {
             try
             {
-                sfContext::getInstance()->getLogger()->log(sprintf("%s::%d before bindValue %s, %s", __METHOD__, __LINE__, $key, $value), sfLogger::WARNING);
                 $stmt->bindValue( $key, $value, $this->boundValuesType[$key] );
-                sfContext::getInstance()->getLogger()->log(sprintf("%s::%d after bindValue %s, %s", __METHOD__, __LINE__, $key, $value), sfLogger::WARNING);
             }
             catch ( PDOException $e )
             {
@@ -419,14 +416,12 @@ abstract class ezcQuery
                 ), sfLogger::ERR);
             }
         }
-        sfContext::getInstance()->getLogger()->log(sprintf("%s::%d after foreach", __METHOD__, __LINE__), sfLogger::WARNING);
+
         foreach ( $this->boundParameters as $key => &$value )
         {
             try
             {
-                sfContext::getInstance()->getLogger()->log(sprintf("%s::%d before bindParam %s, %s", __METHOD__, __LINE__, $key, $value), sfLogger::WARNING);
                 $stmt->bindParam( $key, $value, $this->boundParametersType[$key] );
-                sfContext::getInstance()->getLogger()->log(sprintf("%s::%d after bindParam %s, %s", __METHOD__, __LINE__, $key, $value), sfLogger::WARNING);
             }
             catch ( PDOException $e )
             {
@@ -460,7 +455,6 @@ abstract class ezcQuery
                 ), sfLogger::ERR);
             }
         }
-        sfContext::getInstance()->getLogger()->log(sprintf("%s::%d OK", __METHOD__, __LINE__), sfLogger::WARNING);
     }
 
     /**
@@ -475,11 +469,8 @@ abstract class ezcQuery
      */
     public function prepare()
     {
-        sfContext::getInstance()->getLogger()->log(sprintf("%s::%d", __METHOD__, __LINE__), sfLogger::WARNING);
         $stmt = $this->db->prepare( $this->getQuery() );
-        sfContext::getInstance()->getLogger()->log(sprintf("%s::%d after db->prepare", __METHOD__, __LINE__), sfLogger::WARNING);
         $this->doBind( $stmt );
-        sfContext::getInstance()->getLogger()->log(sprintf("%s::%d OK", __METHOD__, __LINE__), sfLogger::WARNING);
         return $stmt;
     }
 
