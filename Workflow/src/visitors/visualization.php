@@ -195,9 +195,9 @@ class ezcWorkflowVisitorVisualization extends ezcWorkflowVisitor
         foreach ( $this->nodes as $key => $data )
         {
             $dot .= sprintf(
-              "node%s [label=\"%s\", color=\"%s\"]\n",
+              '"node%s" [label="%s"]' . "\n",
               $key,
-              $data['label'],
+              str_replace('"', '', $data['label']),
               $data['color']
             );
         }
@@ -209,7 +209,7 @@ class ezcWorkflowVisitorVisualization extends ezcWorkflowVisitor
             foreach ( $toNodes as $toNode )
             {
                 $dot .= sprintf(
-                  "node%s -> node%s%s\n",
+                  '"node%s" -> "node%s%s"' . "\n",
 
                   $fromNode,
                   $toNode[0],
